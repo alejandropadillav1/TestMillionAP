@@ -5,6 +5,8 @@
     <UserSecretsId>a027b040-1663-4b3c-8f82-0665f4c8d08d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ApplicationInsightsResourceId>/subscriptions/10010953-79ee-429e-bdf9-e8f3c6c93fcb/resourcegroups/APV-Innovation/providers/Microsoft.Insights/components/TestMillionAP</ApplicationInsightsResourceId>
+    <Authors>Alejandro Padilla V</Authors>
+    <Copyright>Alejandro Padilla</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +16,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interface\" />
+    <Folder Include="Controller\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
