@@ -90,8 +90,17 @@ namespace TestMillionAP.Controller
             }
         }
         /// <summary>
-        ///   Return filter property trace model filter by IdProperty.
+        ///   Get Image Property filter
         /// </summary>
+        /// <param name="IdImage"></param>
+        /// <returns></returns>
+        //[HttpGet]
+        // public async Task<IActionResult> GetImageProperty(int IdImage)
+        // {
+        // }
+        /// <summary>
+///   Return filter property trace model filter by IdProperty.
+/// </summary>
         /// <param name="IdProperty"></param>
         /// <returns></returns>
         [HttpGet]

@@ -17,4 +17,10 @@
     <ProjectReference Include="..\TestMillionAP\TestMillionAP.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestImage\descargar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

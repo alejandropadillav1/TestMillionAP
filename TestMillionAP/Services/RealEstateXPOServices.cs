@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,8 +28,26 @@ namespace TestMillionAP.Services
             var IdProperty = await CreatePropertyBuildingAsync(propertyModelView).ConfigureAwait(false);
             return await _uow.GetObjectByKeyAsync<Property>(IdProperty);
         }
-        public Task<int> AddImageProperty(ImagePropertyModelView imageProperty, CancellationToken token = default)
-        { throw new NotImplementedException(); }
+        public async Task<int> AddImageProperty(ImagePropertyModelView imageProperty, CancellationToken token = default)
+        {
+            var property = await _uow.GetObjectByKeyAsync<Property>(imageProperty.IdProperty);
+            if(property == null)
+            {
+                property = await CreateDefaultPropertyBuildingAsync();
+            }
+            var propertyImage = new PropertyImage(_uow);
+            propertyImage.Enabled = true;
+            propertyImage.FileName = imageProperty.File.FileName;
+            propertyImage.Property = property;
+            using(MemoryStream fileStream = new MemoryStream())
+            {
+                await imageProperty.File.CopyToAsync(fileStream);
+                await fileStream.FlushAsync();
+                propertyImage.File = fileStream.ToArray();
+            }
+            await _uow.CommitChangesAsync();
+            return await Task.FromResult(propertyImage.Oid);
+        }
         public async Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, CancellationToken token = default)
         {
             if(propertyModelView.IdOwner == 0)

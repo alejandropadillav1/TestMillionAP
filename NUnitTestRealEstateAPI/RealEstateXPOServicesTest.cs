@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
 using DevExpress.Xpo.DB.Helpers;
+using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -20,6 +21,17 @@ namespace NUnitTestRealEstateAPI
         protected IDisposable[] disposableOnDisconnect;
         protected virtual IDataStore CreateProvider()
         { return new InMemoryDataStore(AutoCreateOption.DatabaseAndSchema); }
+        [Test]
+        public async Task AddImagePropertyTest()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            var fileStream = System.IO.File.OpenRead(@"TestImage\descargar.png");
+            // var file = System.IO.File.ReadAllBytes(@"TestImage\descargar.png");
+            var property = new ImagePropertyModelView { IdProperty = 1, File = new FormFile(fileStream, 0, fileStream.Length, "descargar", "descargar.png") };
+            var result = await realEstate.AddImageProperty(property);
+            fileStream.Close();
+            Assert.IsTrue(result > 0);
+        }
         /// <summary>
         ///   This test method must return an Id of property building after the saving changes.
         /// </summary>
