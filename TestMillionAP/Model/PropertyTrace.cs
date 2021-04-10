@@ -12,7 +12,7 @@ namespace TestMillionAP.Model
         string name;
         Property property;
         double tax;
-        double value;
+        double value1;
         public PropertyTrace() : base()
         {
         }
@@ -42,8 +42,8 @@ namespace TestMillionAP.Model
         }
         public double Value
         {
-            get => value;
-            set => SetPropertyValue(nameof(Value), ref value, value);
+            get => value1;
+            set => SetPropertyValue(nameof(Value), ref value1, value);
         }
     }
 }

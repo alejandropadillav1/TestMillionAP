@@ -50,7 +50,7 @@ namespace TestMillionAP.Controller
         /// <param name="property"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateBuildingPropertyAsync([FromForm]PropertyModelView property)
+        public async Task<IActionResult> CreateBuildingPropertyAsync([FromForm] PropertyModelView property)
         {
             if(!TryValidateModel(property))
                 return BadRequest(GetFullErrorMessage(ModelState));
@@ -87,6 +87,19 @@ namespace TestMillionAP.Controller
             await foreach(var propertyItem in _realEstateServices.GetAllPropertyModelViewAsync())
             {
                 yield return propertyItem;
+            }
+        }
+        /// <summary>
+        ///   Return filter property trace model filter by IdProperty.
+        /// </summary>
+        /// <param name="IdProperty"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async IAsyncEnumerable<PropertyTraceModelView> GetPropertyTraceModelViewAsync(int IdProperty)
+        {
+            await foreach(var propertyTrace in _realEstateServices.GetAllPropertyTraceViewAsync(IdProperty))
+            {
+                yield return propertyTrace;
             }
         }
     }

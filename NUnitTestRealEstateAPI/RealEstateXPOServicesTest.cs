@@ -64,6 +64,16 @@ namespace NUnitTestRealEstateAPI
             var result = await realEstate.CreatePropertyTraceAsync(property);
             Assert.IsTrue(result > 0);
         }
+        /// <summary>
+        ///   This test method is for create a new Property Trace
+        /// </summary>
+        [Test]
+        public void GetPropertyTraceModelFilter()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            var exp = realEstate.GetAllPropertyTraceViewAsync(0);
+            Assert.IsTrue(exp.GetAsyncEnumerator().Current == null);
+        }
         [SetUp]
         public virtual void SetUp()
         {

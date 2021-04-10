@@ -24,16 +24,16 @@ namespace TestMillionAP.Services
         private async Task<Property> CreateDefaultPropertyBuildingAsync()
         {
             var propertyModelView = new PropertyModelView { Address = "Unknown Address", CodeInternal = "Code Internal Unknown", Name = "Unknown Name", Price = 0, Year = DateTime.Now.Year, IdOwner = -1, };
-            var IdProperty = await CreatePropertyBuildingAsync(propertyModelView);
+            var IdProperty = await CreatePropertyBuildingAsync(propertyModelView).ConfigureAwait(false);
             return await _uow.GetObjectByKeyAsync<Property>(IdProperty);
         }
-        public Task<int> AddImageProperty(ImagePropertyModelView imageProperty, CancellationTokenSource token = null)
+        public Task<int> AddImageProperty(ImagePropertyModelView imageProperty, CancellationToken token = default)
         { throw new NotImplementedException(); }
-        public async Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, CancellationTokenSource token = null)
+        public async Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, CancellationToken token = default)
         {
             if(propertyModelView.IdOwner == 0)
                 throw new Exception("Id Owner should be greater than 0");
-            var owner = await _uow.GetObjectByKeyAsync<Owner>(propertyModelView.IdOwner);
+            var owner = await _uow.GetObjectByKeyAsync<Owner>(propertyModelView.IdOwner).ConfigureAwait(false);
             if(owner == null)
             {
                 owner = new Owner(_uow);
@@ -51,9 +51,9 @@ namespace TestMillionAP.Services
             await _uow.CommitChangesAsync();
             return await Task.FromResult(propertyBuilding.Oid);
         }
-        public async Task<int> CreatePropertyTraceAsync(PropertyTraceModelView propertyTraceModelView, CancellationTokenSource token = null)
+        public async Task<int> CreatePropertyTraceAsync(PropertyTraceModelView propertyTraceModelView, CancellationToken token = default)
         {
-            var property = await _uow.GetObjectByKeyAsync<Property>(propertyTraceModelView.IdProperty);
+            var property = await _uow.GetObjectByKeyAsync<Property>(propertyTraceModelView.IdProperty).ConfigureAwait(false);
             if(property == null)
             {
                 property = await CreateDefaultPropertyBuildingAsync();
@@ -67,20 +67,43 @@ namespace TestMillionAP.Services
             await _uow.CommitTransactionAsync();
             return await Task.FromResult(propertyTrace.Oid);
         }
-        public async IAsyncEnumerable<OwnerModelView> GetAllOwnerModelViewAsync(CancellationTokenSource token = null)
+        public async IAsyncEnumerable<OwnerModelView> GetAllOwnerModelViewAsync(CancellationToken token = default)
         {
+            bool cancel = false;
+            using var registration = token.Register(() => cancel = true);
             var listOwnerModelView = _uow.Query<Owner>().Select(x => new OwnerModelView { Address = x.Address, Birthday = x.Birthday, IdOwner = x.Oid, Photo = x.Photo, Name = x.Name }).ToListAsync();
             foreach(var ownerModelItem in await listOwnerModelView)
             {
+                if(cancel)
+                    break;
                 yield return ownerModelItem;
             }
         }
-        public async IAsyncEnumerable<PropertyModelView> GetAllPropertyModelViewAsync(CancellationTokenSource token = null)
+        public async IAsyncEnumerable<PropertyModelView> GetAllPropertyModelViewAsync(CancellationToken token = default)
         {
+            bool cancel = false;
+            using var registration = token.Register(() => cancel = true);
             var listPropertyModelView = _uow.Query<Property>().Select(x => new PropertyModelView { Address = x.Address, CodeInternal = x.CodeInternal, IdOwner = x.Owner.Oid, IdProperty = x.Oid, Name = x.Name, Price = x.Price, Year = x.Year }).ToListAsync();
             foreach(var propertyItemView in await listPropertyModelView)
             {
+                if(cancel)
+                    break;
                 yield return propertyItemView;
+            }
+        }
+        public async IAsyncEnumerable<PropertyTraceModelView> GetAllPropertyTraceViewAsync(int IdPropertyModel, CancellationToken token = default)
+        {
+            bool cancel = false;
+            using var registration = token.Register(() => cancel = true);
+            var property = await _uow.GetObjectByKeyAsync<Property>(IdPropertyModel).ConfigureAwait(false);
+            if(property == null)
+                throw new Exception("The Id Property doesn't exist");
+            var listPropertyTraceModel = _uow.Query<PropertyTrace>().Where(x => x.Property == property).Select(x => new PropertyTraceModelView { }).ToListAsync();
+            foreach(var propertyTraceItem in await listPropertyTraceModel)
+            {
+                if(cancel)
+                    break;
+                yield return propertyTraceItem;
             }
         }
     }
