@@ -21,7 +21,7 @@ Http put, if the Id Property exist, it could update the price, if not, it should
 
 - d) Update Views property
 
-http put, check if the Id Property exist, it will update the general property, property trace and the owner.
+Http get, you can get several request as needed.
 
 - e) List property with filters.
 
