@@ -33,6 +33,8 @@ It should be a optional statement, because of the frontend almost all of the con
 - Clean Code.
 - High Availability
 - Application Insight Azure is included in order to monitor the performance and finding out the bottle-neck.
+- NUnitTest included with each parameters.
+- Security will be include in a next phase (The best option is using with JWT Bearer Authentication)
     
     
 ## Installation Instructions
