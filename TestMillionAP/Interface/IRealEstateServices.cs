@@ -29,6 +29,11 @@ namespace TestMillionAP.Interface
         /// <returns></returns>
         public Task<int> CreatePropertyTraceAsync(PropertyTraceModelView propertyTraceModelView, System.Threading.CancellationToken token = default);
         /// <summary>
+        ///   Retrieve all IdImageProperty
+        /// </summary>
+        /// <returns></returns>
+        public IAsyncEnumerable<ImagePropertyModelView> GetAllImagePropertyAsync(System.Threading.CancellationToken token = default);
+        /// <summary>
         ///   Bonus, return all the owner model object saved into a database.
         /// </summary>
         /// <param name="token"></param>
@@ -46,5 +51,11 @@ namespace TestMillionAP.Interface
         /// <param name="token"></param>
         /// <returns></returns>
         public IAsyncEnumerable<PropertyTraceModelView> GetAllPropertyTraceViewAsync(int IdPropertyModel, System.Threading.CancellationToken token = default);
+        /// <summary>
+        ///   Retrieve a Id Image if exist, otherwise it should throw an exception that doesn't exist
+        /// </summary>
+        /// <param name="idImageProperty"></param>
+        /// <returns></returns>
+        public Task<byte[]> GetImagePropertyAsync(int idImageProperty);
     }
 }

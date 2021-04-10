@@ -8,6 +8,7 @@ namespace TestMillionAP.ModelView
     {
         [Required]
         public IFormFile File { get; set; }
+        public int IdImageProperty { get; set; }
         public int IdProperty { get; set; }
     }
 }

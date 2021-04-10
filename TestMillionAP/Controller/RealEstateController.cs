@@ -66,6 +66,18 @@ namespace TestMillionAP.Controller
             return Ok(idPropertyTrace);
         }
         /// <summary>
+        ///   Bonus section, retrieve all Image Property
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async IAsyncEnumerable<ImagePropertyModelView> GetAllImagePropertyModelAsync()
+        {
+            await foreach(var imageProperty in _realEstateServices.GetAllImagePropertyAsync())
+            {
+                yield return imageProperty;
+            }
+        }
+        /// <summary>
         ///   Bonus Section, return all owner view stored into a database
         /// </summary>
         /// <returns></returns>
@@ -90,17 +102,19 @@ namespace TestMillionAP.Controller
             }
         }
         /// <summary>
-        ///   Get Image Property filter
+        ///   Retrieve image Id if exist, otherwise throw an exception that doesn't exist a image
         /// </summary>
-        /// <param name="IdImage"></param>
+        /// <param name="IdImageProperty"></param>
         /// <returns></returns>
-        //[HttpGet]
-        // public async Task<IActionResult> GetImageProperty(int IdImage)
-        // {
-        // }
+        [HttpGet]
+        public async Task<IActionResult> GetImagePropertyAsync(int IdImageProperty)
+        {
+            var image = await _realEstateServices.GetImagePropertyAsync(IdImageProperty);
+            return File(image, "image/png");
+        }
         /// <summary>
-///   Return filter property trace model filter by IdProperty.
-/// </summary>
+        ///   Return filter property trace model filter by IdProperty.
+        /// </summary>
         /// <param name="IdProperty"></param>
         /// <returns></returns>
         [HttpGet]

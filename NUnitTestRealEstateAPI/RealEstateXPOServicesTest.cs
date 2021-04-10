@@ -21,12 +21,15 @@ namespace NUnitTestRealEstateAPI
         protected IDisposable[] disposableOnDisconnect;
         protected virtual IDataStore CreateProvider()
         { return new InMemoryDataStore(AutoCreateOption.DatabaseAndSchema); }
+        /// <summary>
+        ///   Test adding fake image property with its image format in PNG.
+        /// </summary>
+        /// <returns></returns>
         [Test]
         public async Task AddImagePropertyTest()
         {
             RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
             var fileStream = System.IO.File.OpenRead(@"TestImage\descargar.png");
-            // var file = System.IO.File.ReadAllBytes(@"TestImage\descargar.png");
             var property = new ImagePropertyModelView { IdProperty = 1, File = new FormFile(fileStream, 0, fileStream.Length, "descargar", "descargar.png") };
             var result = await realEstate.AddImageProperty(property);
             fileStream.Close();
@@ -75,6 +78,15 @@ namespace NUnitTestRealEstateAPI
             var property = new PropertyTraceModelView { DateSale = DateTime.Now, IdProperty = -1, Name = "Test Name", Tax = 20, Value = 20000 };
             var result = await realEstate.CreatePropertyTraceAsync(property);
             Assert.IsTrue(result > 0);
+        }
+        /// <summary>
+        ///   Test doesn't exist image id property, it should throw an exception.
+        /// </summary>
+        [Test]
+        public void GetImageIdPropertyNotFound()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            Assert.ThrowsAsync<Exception>(async () => await realEstate.GetImagePropertyAsync(0));
         }
         /// <summary>
         ///   This test method is for create a new Property Trace

@@ -86,6 +86,18 @@ namespace TestMillionAP.Services
             await _uow.CommitTransactionAsync();
             return await Task.FromResult(propertyTrace.Oid);
         }
+        public async IAsyncEnumerable<ImagePropertyModelView> GetAllImagePropertyAsync(System.Threading.CancellationToken token = default)
+        {
+            bool cancel = false;
+            using var registration = token.Register(() => cancel = true);
+            var listImageProperty = _uow.Query<PropertyImage>().Select(x => new ImagePropertyModelView { IdImageProperty = x.Oid, IdProperty = x.Property.Oid, }).ToListAsync();
+            foreach(var imagePropertyItem in await listImageProperty)
+            {
+                if(cancel)
+                    break;
+                yield return imagePropertyItem;
+            }
+        }
         public async IAsyncEnumerable<OwnerModelView> GetAllOwnerModelViewAsync(CancellationToken token = default)
         {
             bool cancel = false;
@@ -124,6 +136,13 @@ namespace TestMillionAP.Services
                     break;
                 yield return propertyTraceItem;
             }
+        }
+        public async Task<byte[]> GetImagePropertyAsync(int idImageProperty)
+        {
+            var image = await _uow.GetObjectByKeyAsync<PropertyImage>(idImageProperty);
+            if(image == null)
+                throw new Exception("Id Image doesn't exist");
+            return await Task.FromResult(image.File);
         }
     }
 }

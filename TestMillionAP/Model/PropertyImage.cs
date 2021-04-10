@@ -34,7 +34,6 @@ namespace TestMillionAP.Model
             get => fileName;
             set => SetPropertyValue(nameof(FileName), ref fileName, value);
         }
-        [PersistentAlias("IdProperty")]
         public Property Property
         {
             get => property;
