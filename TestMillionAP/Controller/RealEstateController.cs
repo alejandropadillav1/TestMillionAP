@@ -70,7 +70,7 @@ namespace TestMillionAP.Controller
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async IAsyncEnumerable<ImagePropertyModelView> GetAllImagePropertyModelAsync()
+        public async IAsyncEnumerable<ImagePropertyModelView> GetAllImagePropertyModelViewAsync()
         {
             await foreach(var imageProperty in _realEstateServices.GetAllImagePropertyAsync())
             {
@@ -124,6 +124,12 @@ namespace TestMillionAP.Controller
             {
                 yield return propertyTrace;
             }
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdatePricePropertyId(int IdProperty, double Price)
+        {
+            var status = await _realEstateServices.UpdatePricePropertyAsync(IdProperty, Price);
+            return Ok(status);
         }
     }
 }

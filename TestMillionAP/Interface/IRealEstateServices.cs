@@ -57,5 +57,12 @@ namespace TestMillionAP.Interface
         /// <param name="idImageProperty"></param>
         /// <returns></returns>
         public Task<byte[]> GetImagePropertyAsync(int idImageProperty);
+        /// <summary>
+        ///   Update the price into a Property Id.
+        /// </summary>
+        /// <param name="idProperty"></param>
+        /// <param name="price"></param>
+        /// <returns></returns>
+        public Task<bool> UpdatePricePropertyAsync(int idProperty, double price, System.Threading.CancellationToken token = default);
     }
 }

@@ -118,5 +118,25 @@ namespace NUnitTestRealEstateAPI
                 }
             }
         }
+        /// <summary>
+        ///   Create new property item and update price with the existing property.
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task UpdatePriceDefault()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            await CreateNewBuildingPropertyTest();
+            Assert.IsTrue(await realEstate.UpdatePricePropertyAsync(1, 20000));
+        }
+        /// <summary>
+        ///   Check if the propertyItem doesn't exist, it should throw an exception as expected
+        /// </summary>
+        [Test]
+        public void UpdatePricePropertyDoesNotExist()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            Assert.ThrowsAsync<Exception>(async () => await realEstate.UpdatePricePropertyAsync(0, 2000));
+        }
     }
 }

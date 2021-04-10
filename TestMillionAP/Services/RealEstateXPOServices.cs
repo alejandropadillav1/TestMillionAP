@@ -144,5 +144,14 @@ namespace TestMillionAP.Services
                 throw new Exception("Id Image doesn't exist");
             return await Task.FromResult(image.File);
         }
+        public async Task<bool> UpdatePricePropertyAsync(int idProperty, double price, CancellationToken token = default)
+        {
+            var propertyId = await _uow.GetObjectByKeyAsync<Property>(idProperty);
+            if(propertyId == null)
+                throw new Exception("Property id doesn't exist");
+            propertyId.Price = price;
+            await _uow.CommitChangesAsync();
+            return await Task.FromResult(true);
+        }
     }
 }
