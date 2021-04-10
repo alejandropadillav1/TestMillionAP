@@ -23,6 +23,12 @@ namespace TestMillionAP.Interface
         /// <returns></returns>
         public Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, System.Threading.CancellationTokenSource token = null);
         /// <summary>
+        ///   This is a http post, to create new property trace, if the IdPropertyId doesn't exist, it will create automatically with a default attributes.
+        /// </summary>
+        /// <param name="propertyTrace"></param>
+        /// <returns></returns>
+        public Task<int> CreatePropertyTraceAsync(PropertyTraceModelView propertyTraceModelView, System.Threading.CancellationTokenSource token = null);
+        /// <summary>
         ///   Bonus, return all the owner model object saved into a database.
         /// </summary>
         /// <param name="token"></param>

@@ -57,6 +57,14 @@ namespace TestMillionAP.Controller
             var idBuildingProperty = await _realEstateServices.CreatePropertyBuildingAsync(property);
             return Ok(idBuildingProperty);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreatePropertyTraceBuilding([FromForm] PropertyTraceModelView propertyTrace)
+        {
+            if(!TryValidateModel(propertyTrace))
+                return BadRequest(GetFullErrorMessage(ModelState));
+            var idPropertyTrace = await _realEstateServices.CreatePropertyTraceAsync(propertyTrace);
+            return Ok(idPropertyTrace);
+        }
         /// <summary>
         ///   Bonus Section, return all owner view stored into a database
         /// </summary>

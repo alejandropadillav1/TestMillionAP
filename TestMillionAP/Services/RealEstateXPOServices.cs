@@ -17,11 +17,21 @@ namespace TestMillionAP.Services
     {
         private readonly UnitOfWork _uow;
         public RealEstateXPOServices(UnitOfWork uow) { _uow = uow; }
+        /// <summary>
+        ///   SOLID PRinciples, Single responsibilities.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<Property> CreateDefaultPropertyBuildingAsync()
+        {
+            var propertyModelView = new PropertyModelView { Address = "Unknown Address", CodeInternal = "Code Internal Unknown", Name = "Unknown Name", Price = 0, Year = DateTime.Now.Year, IdOwner = -1, };
+            var IdProperty = await CreatePropertyBuildingAsync(propertyModelView);
+            return await _uow.GetObjectByKeyAsync<Property>(IdProperty);
+        }
         public Task<int> AddImageProperty(ImagePropertyModelView imageProperty, CancellationTokenSource token = null)
         { throw new NotImplementedException(); }
         public async Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, CancellationTokenSource token = null)
         {
-            if(propertyModelView.IdOwner <= 0)
+            if(propertyModelView.IdOwner == 0)
                 throw new Exception("Id Owner should be greater than 0");
             var owner = await _uow.GetObjectByKeyAsync<Owner>(propertyModelView.IdOwner);
             if(owner == null)
@@ -40,6 +50,22 @@ namespace TestMillionAP.Services
             propertyBuilding.CodeInternal = propertyModelView.CodeInternal;
             await _uow.CommitChangesAsync();
             return await Task.FromResult(propertyBuilding.Oid);
+        }
+        public async Task<int> CreatePropertyTraceAsync(PropertyTraceModelView propertyTraceModelView, CancellationTokenSource token = null)
+        {
+            var property = await _uow.GetObjectByKeyAsync<Property>(propertyTraceModelView.IdProperty);
+            if(property == null)
+            {
+                property = await CreateDefaultPropertyBuildingAsync();
+            }
+            var propertyTrace = new PropertyTrace(_uow);
+            propertyTrace.Property = property;
+            propertyTrace.Name = propertyTraceModelView.Name;
+            propertyTrace.Tax = propertyTraceModelView.Tax;
+            propertyTrace.Value = propertyTraceModelView.Value;
+            propertyTrace.DateSale = propertyTraceModelView.DateSale;
+            await _uow.CommitTransactionAsync();
+            return await Task.FromResult(propertyTrace.Oid);
         }
         public async IAsyncEnumerable<OwnerModelView> GetAllOwnerModelViewAsync(CancellationTokenSource token = null)
         {

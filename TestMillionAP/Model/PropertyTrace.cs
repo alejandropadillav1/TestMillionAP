@@ -30,7 +30,6 @@ namespace TestMillionAP.Model
             get => name;
             set => SetPropertyValue(nameof(Name), ref name, value);
         }
-        [PersistentAlias("IdProperty")]
         public Property Property
         {
             get => property;

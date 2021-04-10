@@ -33,7 +33,18 @@ namespace NUnitTestRealEstateAPI
             Assert.AreEqual(result, 1);
         }
         /// <summary>
-        ///   This test method must throw an exception if the Id Owner is less or equal than 0.
+        ///   This test method must throw an exception if the Id Owner is less  than 0, only for create unknown
+        /// </summary>
+        [Test]
+        public async Task CreateNewBuildingPropertyTestCreateDefaultOwner()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            var property = new PropertyModelView { Address = "AddressTest", CodeInternal = "Code", IdOwner = -1, IdProperty = 1, Name = "NameTest", Price = 2540, Year = 2015 };
+            var result = await realEstate.CreatePropertyBuildingAsync(property);
+            Assert.IsTrue(result > 0);
+        }
+        /// <summary>
+        ///   This test method must throw an exception if the Id Owner  equal than 0.
         /// </summary>
         [Test]
         public void CreateNewBuildingPropertyTestWithoutOwnerId()
@@ -41,6 +52,17 @@ namespace NUnitTestRealEstateAPI
             RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
             var property = new PropertyModelView { Address = "AddressTest", CodeInternal = "Code", IdOwner = 0, IdProperty = 1, Name = "NameTest", Price = 2540, Year = 2015 };
             Assert.ThrowsAsync<Exception>(async () => await realEstate.CreatePropertyBuildingAsync(property));
+        }
+        /// <summary>
+        ///   This test method is for create a new Property Trace
+        /// </summary>
+        [Test]
+        public async Task CreateNewPropertyTraceTestDefault()
+        {
+            RealEstateXPOServices realEstate = new RealEstateXPOServices(_uow);
+            var property = new PropertyTraceModelView { DateSale = DateTime.Now, IdProperty = -1, Name = "Test Name", Tax = 20, Value = 20000 };
+            var result = await realEstate.CreatePropertyTraceAsync(property);
+            Assert.IsTrue(result > 0);
         }
         [SetUp]
         public virtual void SetUp()
