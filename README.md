@@ -4,7 +4,35 @@ A large Real Estate company requires creating an API to obtain information about
 
 Developed by Alejandro P
 
+a)	Create Property Building 
 
+This is a http post, to create new property building (Property Table), you can complete the following attributes. If the Owner Id doesn't exist, it will create automatically
+with a default attribute, you can edit these following parameters into a Update View property.
+
+b)	Add Image from property.
+
+Http post, you can add the image and convert a byte array. If the Property Id doesn't exist, it will create automatically with a default attribute.
+
+c)	Change Price
+
+Http put, if the Id Property exist, it could update the price, if not, it should throw an exception as expected.
+
+d)	Update Views property
+
+http put, check if the Id Property exist, it will update the general property, property trace and the owner.
+
+e)	List property with filters.
+
+It should be a optional statement, because of the frontend almost all of the control will have a robust and faster filter Grid Controll. By the way I implement the Year's filter.
+
+
+## Additional considerations.
+- SOLID Principles incluided
+- Architect Desing Pattern (Class - Scoped).
+- Async/await incluided
+- Clean Code.
+- High Availability
+- Application Insight Azure is included in order to monitor the performance and finding out the bottle-neck.
     
     
 ## Installation Instructions
