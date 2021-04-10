@@ -15,7 +15,11 @@ namespace TestMillionAP.Services
     {
         private readonly UnitOfWork _uow;
         public RealEstateXPOServices(UnitOfWork uow) { _uow = uow; }
-        public Task<bool> CreatePropertyBuildingAsync(int owner, PropertyModelView propertyModelView, CancellationTokenSource token = null)
-        { throw new NotImplementedException(); }
+        public Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, CancellationTokenSource token = null)
+        {
+            if(propertyModelView.IdOwner <= 0)
+                throw new Exception("Id Owner isn't valid, should be greater than 0");
+            return Task.FromResult(1);
+        }
     }
 }

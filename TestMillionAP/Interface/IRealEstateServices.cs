@@ -12,6 +12,6 @@ namespace TestMillionAP.Interface
         /// <param name="owner"></param>
         /// <param name=""></param>
         /// <returns></returns>
-        public Task<bool> CreatePropertyBuildingAsync(int owner, PropertyModelView propertyModelView, System.Threading.CancellationTokenSource token = null);
+        public Task<int> CreatePropertyBuildingAsync(PropertyModelView propertyModelView, System.Threading.CancellationTokenSource token = null);
     }
 }
