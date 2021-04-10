@@ -25,7 +25,7 @@ http put, check if the Id Property exist, it will update the general property, p
 
 - e) List property with filters.
 
-It should be a optional statement, because of the frontend almost all of the control will have a robust and faster filter Grid Controll. By the way I implement the Year's filter.
+It should be a optional statement, because of the frontend almost all of the control will have a robust and faster filter Grid Controll. By the way I implement several method with a filter parameters.
 
 
 ## Additional considerations.
