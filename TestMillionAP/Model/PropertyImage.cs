@@ -10,6 +10,7 @@ namespace TestMillionAP.Model
     {
         bool enabled;
         byte[] file;
+        string fileName;
         Property property;
         public PropertyImage() : base()
         {
@@ -27,6 +28,11 @@ namespace TestMillionAP.Model
         {
             get => file;
             set => SetPropertyValue(nameof(File), ref file, value);
+        }
+        public string FileName
+        {
+            get => fileName;
+            set => SetPropertyValue(nameof(FileName), ref fileName, value);
         }
         [PersistentAlias("IdProperty")]
         public Property Property

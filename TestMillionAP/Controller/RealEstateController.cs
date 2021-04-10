@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestMillionAP.Interface;
@@ -19,11 +21,65 @@ namespace TestMillionAP.Controller
         private readonly IRealEstateServices _realEstateServices;
         public RealEstateController(IRealEstateServices realEstateServices)
         { _realEstateServices = realEstateServices; }
-        [HttpPost]
-        public async Task<IActionResult> CreateBuildingPropertyAsync(PropertyModelView property)
+        private string GetFullErrorMessage(ModelStateDictionary modelState)
         {
+            var messages = new List<string>();
+            foreach(var entry in modelState)
+            {
+                foreach(var error in entry.Value.Errors)
+                    messages.Add(error.ErrorMessage);
+            }
+            return String.Join(" ", messages);
+        }
+        /// <summary>
+        ///   b) Add Image from property
+        /// </summary>
+        /// <param name="imageProperty"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddImagePropertyAsync([FromForm] ImagePropertyModelView imageProperty)
+        {
+            if(!TryValidateModel(imageProperty))
+                return BadRequest(GetFullErrorMessage(ModelState));
+            var idImageProperty = await _realEstateServices.AddImageProperty(imageProperty);
+            return Ok(idImageProperty);
+        }
+        /// <summary>
+        ///   a) Create Building Property
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateBuildingPropertyAsync([FromForm]PropertyModelView property)
+        {
+            if(!TryValidateModel(property))
+                return BadRequest(GetFullErrorMessage(ModelState));
             var idBuildingProperty = await _realEstateServices.CreatePropertyBuildingAsync(property);
             return Ok(idBuildingProperty);
+        }
+        /// <summary>
+        ///   Bonus Section, return all owner view stored into a database
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async IAsyncEnumerable<OwnerModelView> GetAllOwnerModelViewAsync()
+        {
+            await foreach(var ownerItem in _realEstateServices.GetAllOwnerModelViewAsync())
+            {
+                yield return ownerItem;
+            }
+        }
+        /// <summary>
+        ///   Bonus section, getting all Property View
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async IAsyncEnumerable<PropertyModelView> GetAllPropertyModelViewAsync()
+        {
+            await foreach(var propertyItem in _realEstateServices.GetAllPropertyModelViewAsync())
+            {
+                yield return propertyItem;
+            }
         }
     }
 }
