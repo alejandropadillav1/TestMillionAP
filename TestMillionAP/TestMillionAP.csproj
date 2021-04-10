@@ -5,6 +5,9 @@
     <UserSecretsId>a027b040-1663-4b3c-8f82-0665f4c8d08d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <ApplicationInsightsResourceId>/subscriptions/10010953-79ee-429e-bdf9-e8f3c6c93fcb/resourcegroups/APV-Innovation/providers/Microsoft.Insights/components/TestMillionAP</ApplicationInsightsResourceId>
+    <Authors>Alejandro Padilla V</Authors>
+    <Copyright>Alejandro Padilla</Copyright>
+    <AssemblyName>millionandup.test</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
