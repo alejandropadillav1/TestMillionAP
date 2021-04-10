@@ -9,7 +9,7 @@ Developed by Alejandro P
 This is a http post, to create new property building (Property Table), you can complete the following attributes. If the Owner Id doesn't exist, it will create automatically
 with a default attribute, you can edit these following parameters into a Update View property.
 
-### IMPORTANT NOTE : If you want to create a PropertyTraceAsync using with /api/RealEstate/CreatePropertyTraceBuilding Method with the default Id Property, simply untick the Send Empty Value into a IdProperty Attribute in order to create its Property trace.
+### IMPORTANT NOTE : If you want to create a PropertyTraceAsync using with /api/RealEstate/CreatePropertyTraceBuilding Method with the default Id Property, simply untick the Send Empty Value into a IdProperty Attribute in order to create its Property trace in a Swagger UI
 
 - b) Add Image from property.
 
